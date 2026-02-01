@@ -163,7 +163,7 @@ body {
             rgba(0, 40, 60, 0.6) 80%, 
             rgba(255, 255, 255, 1) 100% 
         ),
-        url("/images/Elephant.png"); 
+        url("../images/Elephant.png"); 
     background-size: cover;
     background-position: center top; 
     background-repeat: no-repeat;
@@ -484,7 +484,7 @@ footer {
         ),
         
         /* 2. LAYER 2: Your Background Photo */
-        url('/images/Image 3.png');
+        url('../images/Image 3.png');
     
     /* Ensure the image covers the entire area */
     background-size:cover; 
@@ -615,7 +615,7 @@ footer {
     text-align: center;
     padding: 160px 20px 100px 20px; /* Top padding clears the fixed header */
     background-color: #f9f9f9; /* Light contrast against the white cards */
-    background-image: url(/images/BeachSide1.jpg);
+    background-image: url(../images/BeachSide1.jpg);
     background-size: cover;
     background-position:initial;
     background-repeat: no-repeat;
@@ -807,7 +807,7 @@ body {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: url('/images/BeachSide1.jpg') center/cover;
+    background: url('../images/BeachSide1.jpg') center/cover;
     opacity: 1;
     z-index: -1;
     animation: slowZoom 20s ease-in-out infinite alternate;
@@ -825,7 +825,6 @@ body {
     padding: 20px;
     animation: fadeInUp 1.2s ease;
 }
-
 .hero-logo {
     font-family: 'Brush Script MT', cursive;
     font-size: 5em; 

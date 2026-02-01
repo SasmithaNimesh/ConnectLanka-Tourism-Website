@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery | Connect Lanka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="gallery-style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="css/style.css" />
+        
+</head>
+<body>
+
+<header class="main-header">
+    <nav class="navbar">
+        <div class="site-logo">
+            <a href="index.html">Connect Lanka</a>
+        </div>
+        
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="gallery.html" class="active">Gallery</a></li>
+            <li><a href="travel.html">Travel</a></li>
+            
+            <li id="loginItem">
+                <a href="signup-option.html">Login</a>
+            </li>
+
+        </ul>
+    </nav>
+</header>
+
+<script>
+    // === SMART LOGIN LOGIC ===
+    // Run this automatically when the page loads
+    document.addEventListener("DOMContentLoaded", function() {
+        const user = localStorage.getItem('user');
+        const authSection = document.getElementById('authSection');
+
+        if (user) {
+            // IF LOGGED IN: Show Name + Logout
+            // We keep the same <a> tag style so it looks nice
+            authSection.innerHTML = `
+                <a href="#" onclick="logout()" style="color: #ff4757; font-weight: bold;">
+                    👤 ${user} (Logout)
+                </a>
+            `;
+        }
+    });
+
+    function logout() {
+        // Delete user from memory and reload page
+        localStorage.removeItem('user');
+        window.location.href = 'signup-option.html'; // Go back to login page
+    }
+</script>
+
+<main class="gallery-container">
+    
+    <section class="gallery-hero">
+        <h1>Island Moments</h1>
+        <p>A visual journey through the pearl of the Indian Ocean.</p>
+    </section>
+
+    <section class="filter-menu">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="heritage">Heritage</button>
+        <button class="filter-btn" data-filter="nature">Nature & Wildlife</button>
+        <button class="filter-btn" data-filter="beach">Beaches</button>
+    </section>
+
+    <section class="gallery-grid">
+        
+        <div class="gallery-item heritage">
+            <img src="/images/Gallery images/Sigiriya.png" alt="Sigiriya">
+            <div class="overlay">
+                <div class="text">Sigiriya Rock</div>
+            </div>
+        </div>
+
+        <div class="gallery-item nature">
+            <img src="/images/Gallery images/Yala National Park.jpg" alt=" Yala National Park">
+            <div class="overlay">
+                <div class="text">Yala</div>
+            </div>
+        </div>
+
+        <div class="gallery-item beach">
+            <img src="/images/Gallery images/Mirissa.jpg" alt="Mirissa">
+            <div class="overlay">
+                <div class="text">Mirissa</div>
+            </div>
+        </div>
+
+        <div class="gallery-item heritage">
+            <img src="/images/Gallery images/nine-arch.jpg" alt="Nine Arch Bridge">
+            <div class="overlay">
+                <div class="text">Nine Arch Bridge</div>
+            </div>
+        </div>
+
+        <div class="gallery-item beach">
+            <img src="/images/Gallery images/Unawatuna-Beach.jpg" alt="Unawatuna">
+            <div class="overlay">
+                <div class="text">Unawatuna </div>
+            </div>
+        </div>
+
+        <div class="gallery-item nature">
+            <img src="/images/Gallery images/tea-Plantation.jpg" alt="Tea Plantation">
+            <div class="overlay">
+                <div class="text">Nuwara Eliya Tea</div>
+            </div>
+        </div>
+
+        <div class="gallery-item heritage">
+            <img src="/images/Gallery images/Watadageya-polonnaruwa.jpeg" alt="Polonnaruwa">
+            <div class="overlay">
+                <div class="text">Polonnaruwa</div>
+            </div>
+        </div>
+
+        <div class="gallery-item nature">
+            <img src="/images/Gallery images/elephant2.jpg" alt="Tea Plantation">
+            <div class="overlay">
+                <div class="text">Elephants</div>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const filterButtons = document.querySelectorAll('.filter-btn');
+const galleryItems = document.querySelectorAll('.gallery-item');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // 1. Remove 'active' class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // 2. Add 'active' class to the clicked button
+        button.classList.add('active');
+
+        const filterValue = button.getAttribute('data-filter');
+
+        // 3. Loop through items to show/hide
+        galleryItems.forEach(item => {
+            if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                item.classList.remove('hide');
+                item.classList.add('show');
+            } else {
+                item.classList.remove('show');
+                item.classList.add('hide');
+            }
+        });
+    });
+});
+ // 1. Select the elements using the IDs from your HTML
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    // 2. Add the click event listener
+    menuToggle.addEventListener('click', () => {
+        // 3. Toggle the 'active' class on the links
+        navLinks.classList.toggle('active');
+    });
+</script>
+    <script src="/auth.js"></script>
+    <script src="js/common.js"></script>
+
+
+</body>
+</html>

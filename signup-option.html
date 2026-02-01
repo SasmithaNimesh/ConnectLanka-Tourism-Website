@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started | Connect Lanka</title>
+    
+   <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+     
+        body {
+            /* This ensures the background matches your Login page exactly */
+            background-image: 
+                linear-gradient(to bottom, 
+                    var(--color-primary) 0%, 
+                    rgba(255, 255, 255, 0.13) 20%, 
+                    rgba(255, 252, 252, 0.38) 100%, 
+                    transparent 10%
+                ),
+                url('/images/Image 3.png'); /* Matching style2.css background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh; /* Centers vertically */
+            padding: 100px 20px 40px 20px; /* Top padding clears fixed header */
+            flex-direction: column;
+        }
+
+        .page-title {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            color: var(--color-primary);
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        /* The Grid for the two cards */
+        .cards-wrapper {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Card Styling (Matches style4.css behavior) */
+        .option-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 350px;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-top: 5px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card Hover Effects */
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 70, 90, 0.3);
+        }
+
+        .option-card.traveler:hover {
+            border-top: 5px solid var(--color-primary); /* Teal */
+        }
+        .option-card.partner:hover {
+            border-top: 5px solid var(--color-secondary); /* Gold */
+        }
+
+        /* Icons */
+        .icon-box {
+            width: 100px;
+            height: 100px;
+            background: #f4f7f6;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px auto;
+            font-size: 3rem;
+            transition: 0.3s;
+        }
+
+        .option-card.traveler .icon-box { color: var(--color-primary); }
+        .option-card.partner .icon-box { color: #d35400; /* Dark Orange for contrast */ }
+
+        .option-card:hover .icon-box {
+            background: var(--color-primary);
+            color: white;
+        }
+        .option-card.partner:hover .icon-box {
+            background: var(--color-secondary);
+            color: var(--color-primary);
+        }
+
+        /* Text Styles */
+        .card-heading {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card-text {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            min-height: 50px;
+        }
+
+        /* Buttons */
+        .select-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .btn-teal {
+            background: var(--color-primary);
+            color: white;
+            border: 2px solid var(--color-primary);
+        }
+        .btn-teal:hover {
+            background: transparent;
+            color: var(--color-primary);
+        }
+
+        .btn-gold {
+            background: var(--color-secondary);
+            color: var(--color-primary);
+            border: 2px solid var(--color-secondary);
+        }
+        .btn-gold:hover {
+            background: transparent;
+            color: var(--color-secondary); /* Gold Text */
+            border-color: var(--color-secondary);
+            background: #fff; /* White background for contrast */
+        }
+
+        /* Footer Link */
+        .login-redirect {
+            margin-top: 40px;
+            color: white;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .login-redirect a {
+            color: var(--color-secondary);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .login-redirect a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title { font-size: 3rem; }
+            .option-card { width: 100%; max-width: 320px; }
+        }
+    </style>
+</head>
+<body>
+
+   
+<header class="main-header">
+    <nav class="navbar">
+        <div class="site-logo">
+            <a href="index.html">Connect Lanka</a>
+        </div>
+        
+        <div class="menu-toggle" id="menu-toggle">
+            
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Map.html">Map</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="travel.html">Travel</a></li>
+            <li id="loginItem" ><a href="signup-option.html"  class="active">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+    <div class="options-container">
+        
+        <h1 class="page-title">Join Connect Lanka</h1>
+
+        <div class="cards-wrapper">
+            
+            <div class="option-card traveler" onclick="window.location.href='Signup.html'">
+                <div class="icon-box">
+                    <i class="fas fa-suitcase-rolling"></i>
+                </div>
+                <h2 class="card-heading">I am a Traveler</h2>
+                <p class="card-text">
+                    Explore Sri Lanka like never before. Book hotels, find verified guides, and plan your dream journey.
+                </p>
+                <a href="Signup.html" class="select-btn btn-teal">Join as Traveler</a>
+            </div>
+
+            <div class="option-card partner" onclick="window.location.href='register.html'">
+                <div class="icon-box">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="card-heading">I am a Partner</h2>
+                <p class="card-text">
+                    Grow your business. List your Hotel, register as a Professional Guide, or join our Transport network.
+                </p>
+                <a href="register.html" class="select-btn btn-gold">Register Business</a>
+            </div>
+
+        </div>
+
+        <div class="login-redirect">
+            Already have an account? <a href="Login.html">Log In Here</a>
+        </div>
+    </div>
+
+    <footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        // Navbar Toggle Script
+        const menuToggle = document.getElementById('menu-toggle');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                document.getElementById('nav-links').classList.toggle('active');
+            });
+        }
+    </script>
+
+</body>
+</html>

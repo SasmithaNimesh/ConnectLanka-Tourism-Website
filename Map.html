@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Map Explorer | Connect Lanka</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <style>
+        /* --- Page Layout --- */
+        .map-interactive {
+            display: flex;       
+            flex-wrap: wrap;     
+            gap: 20px;           
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 1. The Map Section */
+        .map-section {
+            flex: 2; /* 66% Width */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 500px;   
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid #ddd;
+        }
+
+        /* Places to Visit Section (Under the Map) */
+        .attractions-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: none; /* Hidden until a district is selected */
+        }
+        
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .place-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+        .place-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .place-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+        
+        .place-info { padding: 10px; }
+        .place-name { font-weight: 600; font-size: 1rem; color: #00465a; margin-bottom: 5px; }
+        .place-desc { font-size: 0.85rem; color: #666; }
+
+        /* 2. The Sidebar */
+        .map-sidebar {
+            flex: 1; /* 33% Width */
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            height: fit-content;
+            border: 1px solid #e0e0e0;
+        }
+
+        .map-sidebar h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            border-bottom: 2px solid #00465a;
+            padding-bottom: 10px;
+        }
+
+        .map-sidebar select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #district-info {
+            padding: 15px;
+            background: #fff;
+            border-left: 5px solid #ffd700; /* Gold Accent */
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .map-interactive { flex-direction: column; }
+            .map-placeholder { height: 350px; }
+        }
+    </style>
+
+</head>
+<body>
+
+<header class="main-header">
+    <nav class="navbar">
+        <div class="site-logo"><a href="index.html">Connect Lanka</a></div>
+        <div class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+         
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html" class="active">Map</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="travel.html">Travel</a></li>
+           <li id="loginItem">
+    <a href="signup-option.html">Login</a>
+</li>
+
+        </ul>
+    </nav>
+</header> 
+
+<main class="page-content">
+    <section class="gallery-hero">
+        <h1 style="-webkit-text-stroke: 1px black; color: white;">Map Explorer</h1>
+        <p>Discover Sri Lanka district by district.</p>
+    </section>
+
+    <section class="section map-interactive">
+        
+        <div class="map-section">
+            <div class="map-placeholder">
+                <iframe 
+                    id="google-map-frame"
+                    src="https://maps.google.com/maps?q=Sri+Lanka&z=8&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <div class="attractions-container" id="attractions-box">
+                <h3 style="color: #00465a; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                    <i class="fas fa-camera"></i> Places to Visit in <span id="selected-district-name">...</span>
+                </h3>
+                <div class="attractions-grid" id="attractions-list">
+                    </div>
+            </div>
+        </div>
+        
+        <aside class="map-sidebar">
+            <h3>Select District</h3>
+            
+            <div class="form-group">
+                <label for="district-select"><b>Choose Location:</b></label>
+                <select id="district-select">
+                    </select>
+            </div>
+
+            <div id="district-info">
+                <h4>Welcome to Sri Lanka</h4>
+                <p>Select a district from the dropdown to view the map and popular tourist attractions.</p>
+            </div>
+
+            <button class="cta-button" style="margin-top: 15px; width: 100%;">Find Local Guides</button>
+        </aside>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // === 1. THE DATA (Hardcoded All 25 Districts) ===
+    const districtsData = {
+        "sri_lanka": { 
+            name: "Sri Lanka",
+            coords: "Sri Lanka", 
+            zoom: 8, 
+            info: "Welcome to Sri Lanka! Select a district to explore details.",
+            attractions: [] 
+        },
+        "Ampara": { 
+            name: "Ampara",
+            coords: "Ampara, Sri Lanka", zoom: 11, 
+            info: "Famous for Gal Oya National Park and world-class surfing at Arugam Bay.",
+            attractions: [
+                { name: "Arugam Bay", desc: "World famous surfing point." },
+                { name: "Gal Oya Park", desc: "Boat safaris to see swimming elephants." }
+            ]
+        },
+        "Anuradhapura": { 
+            name: "Anuradhapura",
+            coords: "Anuradhapura, Sri Lanka", zoom: 12, 
+            info: "The ancient capital. Home to the sacred Bo Tree and massive stupas.",
+            attractions: [
+                { name: "Ruwanwelisaya", desc: "A magnificent ancient stupa." },
+                { name: "Jaya Sri Maha Bodhi", desc: "Sacred Bo tree, oldest planted tree in the world." },
+                { name: "Mihintale", desc: "Mountain peak where Buddhism was introduced." }
+            ]
+        },
+        "Badulla": { 
+            name: "Badulla",
+            coords: "Badulla, Sri Lanka", zoom: 12, 
+            info: "Known for Dunhinda Falls and the beautiful Ella Gap nearby.",
+            attractions: [
+                { name: "Ella Rock", desc: "Famous hiking destination with views." },
+                { name: "Nine Arch Bridge", desc: "Iconic colonial-era railway bridge." },
+                { name: "Dunhinda Falls", desc: "One of Sri Lanka's most beautiful waterfalls." }
+            ]
+        },
+        "Batticaloa": { 
+            name: "Batticaloa",
+            coords: "Batticaloa, Sri Lanka", zoom: 12, 
+            info: "Famous for its singing fish, lagoons, and Pasikudah beach.",
+            attractions: [
+                { name: "Pasikudah Beach", desc: "Shallow, calm waters ideal for swimming." },
+                { name: "Batticaloa Fort", desc: "Historical fort with lagoon views." }
+            ]
+        },
+        "Colombo": { 
+            name: "Colombo",
+            coords: "Colombo, Sri Lanka", zoom: 13, 
+            info: "The commercial hub. Shopping, nightlife, and colonial architecture.",
+            attractions: [
+                { name: "Lotus Tower", desc: "South Asia's tallest self-supported structure." },
+                { name: "Gangaramaya Temple", desc: "Famous Buddhist temple by the lake." },
+                { name: "Galle Face Green", desc: "Urban park facing the ocean." }
+            ]
+        },
+        "Galle": { 
+            name: "Galle",
+            coords: "Galle, Sri Lanka", zoom: 13, 
+            info: "Home to the Dutch Fort (UNESCO site) and Unawatuna Beach.",
+            attractions: [
+                { name: "Galle Fort", desc: "UNESCO World Heritage site." },
+                { name: "Unawatuna Beach", desc: "Popular beach for swimming and dining." },
+                { name: "Jungle Beach", desc: "Secluded beach near Rumassala." }
+            ]
+        },
+        "Gampaha": { 
+            name: "Gampaha",
+            coords: "Gampaha, Sri Lanka", zoom: 12, 
+            info: "Home to the Henarathgoda Botanical Garden and ancient temples.",
+            attractions: [
+                { name: "Henarathgoda Gardens", desc: "First rubber tree planted in Sri Lanka." }
+            ]
+        },
+        "Hambantota": { 
+            name: "Hambantota",
+            coords: "Hambantota, Sri Lanka", zoom: 11, 
+            info: "The gateway to Yala National Park and dry zone botanical gardens.",
+            attractions: [
+                { name: "Yala National Park", desc: "Highest leopard density in the world." },
+                { name: "Mirijjawila Gardens", desc: "Dry zone botanical gardens." }
+            ]
+        },
+        "Jaffna": { 
+            name: "Jaffna",
+            coords: "Jaffna, Sri Lanka", zoom: 11, 
+            info: "Cultural hub of the North. Famous for Nallur Temple and distinct cuisine.",
+            attractions: [
+                { name: "Nallur Kandaswamy", desc: "Iconic Hindu temple." },
+                { name: "Jaffna Fort", desc: "Large colonial fortress." },
+                { name: "Nagadeepa", desc: "Ancient Buddhist temple on an island." }
+            ]
+        },
+        "Kalutara": { 
+            name: "Kalutara",
+            coords: "Kalutara, Sri Lanka", zoom: 12, 
+            info: "Known for the hollow Kalutara Stupa and basket weaving industry.",
+            attractions: [
+                { name: "Kalutara Bodhiya", desc: "Sacred temple by the river." },
+                { name: "Richmond Castle", desc: "Edwardian mansion with history." }
+            ]
+        },
+        "Kandy": { 
+            name: "Kandy",
+            coords: "Kandy, Sri Lanka", zoom: 13, 
+            info: "The Hill Capital. Home to the Temple of the Tooth Relic.",
+            attractions: [
+                { name: "Temple of Tooth", desc: "Houses the sacred tooth relic of Buddha." },
+                { name: "Kandy Lake", desc: "Scenic lake in the heart of the city." },
+                { name: "Peradeniya Gardens", desc: "Royal botanical gardens." }
+            ]
+        },
+        "Kegalle": { 
+            name: "Kegalle",
+            coords: "Kegalle, Sri Lanka", zoom: 12, 
+            info: "Famous for the Pinnawala Elephant Orphanage.",
+            attractions: [
+                { name: "Pinnawala Orphanage", desc: "See elephants bathing in the river." }
+            ]
+        },
+        "Kilinochchi": { 
+            name: "Kilinochchi",
+            coords: "Kilinochchi, Sri Lanka", zoom: 11, 
+            info: "Agricultural hub with vast paddy fields and tanks.",
+            attractions: [
+                { name: "Iranamadu Tank", desc: "One of the largest reservoirs." }
+            ]
+        },
+        "Kurunegala": { 
+            name: "Kurunegala",
+            coords: "Kurunegala, Sri Lanka", zoom: 12, 
+            info: "The city of rocks, famous for the giant Elephant Rock (Ethagala).",
+            attractions: [
+                { name: "Ethagala Rock", desc: "Climb for a panoramic city view." }
+            ]
+        },
+        "Mannar": { 
+            name: "Mannar",
+            coords: "Mannar, Sri Lanka", zoom: 11, 
+            info: "Known for the Baobab tree, flamingos, and the historic fort.",
+            attractions: [
+                { name: "Baobab Tree", desc: "Centuries old massive tree." },
+                { name: "Mannar Fort", desc: "Historical ruins by the sea." }
+            ]
+        },
+        "Matale": { 
+            name: "Matale",
+            coords: "Matale, Sri Lanka", zoom: 12, 
+            info: "Famous for spice gardens and the Aluvihare Rock Temple.",
+            attractions: [
+                { name: "Aluvihare Temple", desc: "Where Tripitaka was first written." },
+                { name: "Riverston", desc: "Scenic misty mountains and trekking." }
+            ]
+        },
+        "Matara": { 
+            name: "Matara",
+            coords: "Matara, Sri Lanka", zoom: 13, 
+            info: "Southern city known for the Dutch Star Fort and Mirissa whale watching.",
+            attractions: [
+                { name: "Mirissa Beach", desc: "Famous for whale watching." },
+                { name: "Paravi Duwa", desc: "Temple located on a small island." }
+            ]
+        },
+        "Monaragala": { 
+            name: "Monaragala",
+            coords: "Monaragala, Sri Lanka", zoom: 11, 
+            info: "Rich in biodiversity, waterfalls, and ancient forest monasteries.",
+            attractions: [
+                { name: "Maligawila", desc: "Giant free-standing Buddha statue." }
+            ]
+        },
+        "Mullaitivu": { 
+            name: "Mullaitivu",
+            coords: "Mullaitivu, Sri Lanka", zoom: 11, 
+            info: "Offers pristine, untouched beaches and war history museums.",
+            attractions: [
+                { name: "War Memorial", desc: "Historical significance." }
+            ]
+        },
+        "Nuwara Eliya": { 
+            name: "Nuwara Eliya",
+            coords: "Nuwara Eliya, Sri Lanka", zoom: 13, 
+            info: "'Little England'. Tea plantations, cool climate, and colonial bungalows.",
+            attractions: [
+                { name: "Gregory Lake", desc: "Boating and relaxation." },
+                { name: "Horton Plains", desc: "World's End drop and Baker's Falls." },
+                { name: "Tea Factories", desc: "Experience pure Ceylon Tea processing." }
+            ]
+        },
+        "Polonnaruwa": { 
+            name: "Polonnaruwa",
+            coords: "Polonnaruwa, Sri Lanka", zoom: 12, 
+            info: "The second ancient kingdom. Famous for the Gal Vihara rock statues.",
+            attractions: [
+                { name: "Gal Vihara", desc: "Masterpiece rock relief statues." },
+                { name: "Parakrama Samudra", desc: "Massive ancient man-made lake." }
+            ]
+        },
+        "Puttalam": { 
+            name: "Puttalam",
+            coords: "Puttalam, Sri Lanka", zoom: 11, 
+            info: "Known for salt pans, lagoons, and Wilpattu National Park access.",
+            attractions: [
+                { name: "Wilpattu Park", desc: "Largest national park in Sri Lanka." },
+                { name: "Kalpitiya", desc: "Kitesurfing and dolphin watching." }
+            ]
+        },
+        "Ratnapura": { 
+            name: "Ratnapura",
+            coords: "Ratnapura, Sri Lanka", zoom: 12, 
+            info: "The City of Gems. The starting point for the Adam's Peak pilgrimage.",
+            attractions: [
+                { name: "Adam's Peak", desc: "Holy mountain pilgrimage site." },
+                { name: "Gem Museums", desc: "See rare and precious stones." }
+            ]
+        },
+        "Trincomalee": { 
+            name: "Trincomalee",
+            coords: "Trincomalee, Sri Lanka", zoom: 12, 
+            info: "One of the world's largest natural harbors and Nilaveli Beach.",
+            attractions: [
+                { name: "Koneswaram Temple", desc: "Temple atop Swami Rock cliff." },
+                { name: "Nilaveli Beach", desc: "Crystal clear water and Pigeon Island." },
+                { name: "Pigeon Island", desc: "Best for snorkeling and diving." }
+            ]
+        },
+        "Vavuniya": { 
+            name: "Vavuniya",
+            coords: "Vavuniya, Sri Lanka", zoom: 12, 
+            info: "A major transit hub between the North and South of Sri Lanka.",
+            attractions: [
+                { name: "Kandasamy Kovil", desc: "Famous Hindu temple." }
+            ]
+        }
+    };
+
+    // === 2. SETUP ELEMENTS ===
+    const dropdown = document.getElementById('district-select');
+    const infoTitle = document.querySelector('#district-info h4');
+    const infoText = document.querySelector('#district-info p');
+    const mapFrame = document.getElementById('google-map-frame');
+    const attContainer = document.getElementById('attractions-box');
+    const attList = document.getElementById('attractions-list');
+    const attTitleName = document.getElementById('selected-district-name');
+
+    // === 3. POPULATE DROPDOWN ON LOAD ===
+    document.addEventListener('DOMContentLoaded', () => {
+        // Create options from the data object keys
+        dropdown.innerHTML = '<option value="sri_lanka">-- View Whole Country --</option>';
+        
+        // Get keys and sort them to ensure alphabetical order in dropdown
+        const districtKeys = Object.keys(districtsData).filter(k => k !== 'sri_lanka').sort();
+        
+        districtKeys.forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = districtsData[key].name;
+            dropdown.appendChild(option);
+        });
+    });
+
+    // === 4. HANDLE SELECTION CHANGE ===
+    dropdown.addEventListener('change', function() {
+        const selectedKey = this.value;
+        const district = districtsData[selectedKey];
+
+        if (district) {
+            // A. Update Text Info
+            infoTitle.textContent = district.name;
+            infoText.textContent = district.info;
+
+            // B. Update Map URL (FIXED HERE)
+            // Use the standard Google Maps query format: https://maps.google.com/maps?q=...
+            const newUrl = `https://maps.google.com/maps?q=${encodeURIComponent(district.coords)}&z=${district.zoom}&output=embed`;
+            mapFrame.src = newUrl;
+
+            // C. Show Attractions (Places to Visit)
+            renderAttractions(district);
+        }
+    });
+
+    // === 5. FUNCTION TO GENERATE CARDS ===
+    function renderAttractions(district) {
+        // Clear old list
+        attList.innerHTML = '';
+        
+        // Update Title Name
+        attTitleName.textContent = district.name;
+
+        // Check if there are attractions
+        if (district.attractions && district.attractions.length > 0) {
+            attContainer.style.display = 'block'; // Show the container
+            
+            district.attractions.forEach(place => {
+                // We use a generic placeholder image if no specific image is provided
+                const imgUrl = place.image || 'images/Gallery images/Sigiriya.png'; 
+                
+                const card = `
+                    <div class="place-card">
+                        <img src="${imgUrl}" class="place-img" alt="${place.name}">
+                        <div class="place-info">
+                            <div class="place-name">${place.name}</div>
+                            <div class="place-desc">${place.desc}</div>
+                        </div>
+                    </div>
+                `;
+                attList.innerHTML += card;
+            });
+        } else {
+            // If viewing "Sri Lanka" or a district with no data added yet
+            if(district.name === "Sri Lanka") {
+                attContainer.style.display = 'none'; // Hide for country view
+            } else {
+                attContainer.style.display = 'block';
+                attList.innerHTML = '<p style="color: #666; font-style: italic;">More places coming soon...</p>';
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+    }
+});
+
+</script>
+    <script src="/auth.js"></script>
+    <script src="js/common.js"></script>
+
+
+</body>
+</html>

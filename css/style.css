@@ -1,0 +1,1061 @@
+/* --- Global Reset & Typography --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+:root {
+    --color-primary: #00465a; /* Dark Teal/Blue */
+    --color-secondary: #ffd700; /* Gold/Yellow */
+    --color-background: #f0f0f0; /* Light Gray */
+    --color-text: #333;
+    --transition-speed: 0.3s;
+}
+
+/* 1. BODY & WATERMARK */
+body {
+    background-color: var(--color-background); 
+    color: var(--color-text);
+    min-height: 100vh;
+}
+
+/* --- Header & Navigation --- */
+.main-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4); 
+    transition: background-color var(--transition-speed), padding var(--transition-speed);
+}
+.main-header.scrolled {
+    background: var(--color-primary); 
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.navbar {
+    max-width: 1200px; 
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+/* Hide hamburger icon on desktop */
+    .menu-toggle {
+        display: none;
+        color: white;
+}
+.site-logo a {
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    font-family: 'Brush Script MT', cursive; 
+}
+
+/* Desktop Navigation */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+.nav-links a {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    transition: color var(--transition-speed);
+    padding: 5px 0;
+}
+.nav-links a:hover, .nav-links a.active {
+    color: var(--color-secondary); 
+}
+
+/* Mobile Toggle */
+@media (max-width: 992px) {
+
+    .navbar {
+        padding: 15px 20px;
+        position: relative; /* 🔴 IMPORTANT for absolute nav-links */
+    }
+
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 1.6rem;
+        z-index: 1100;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 70px; /* slightly lower than navbar */
+        left: 0;
+        background: rgba(0, 0, 0, 0.95);
+        padding: 15px 0;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        animation: slideDown 0.3s ease;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        width: 100%;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+
+    .display-title { font-size: 60px; }
+    .subtitle { font-size: 18px; }
+
+    .card-container,
+    .service-container {
+        flex-direction: column;
+    }
+
+    .card,
+    .service-box {
+        margin-bottom: 20px;
+    }
+
+    .planner-content {
+        flex-direction: column;
+    }
+
+    .planner-image {
+        margin-top: 30px;
+    }
+
+    .trip-planner,
+    .value-proposition,
+    .core-services {
+        padding: 60px 20px;
+    }
+}
+
+
+/* --- Hero Section & Background Fade --- */
+.home-hero {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background-image: 
+        linear-gradient(to bottom, 
+            rgba(0, 40, 60, 0) 50%, 
+            rgba(0, 40, 60, 0.6) 80%, 
+            rgba(255, 255, 255, 1) 100% 
+        ),
+        url("/images/Elephant.png"); 
+    background-size: cover;
+    background-position: center top; 
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.10);
+    z-index: 1;
+}
+
+.content {
+    position: relative;
+    max-width: 900px;
+    color: white;
+    z-index: 10;
+}
+.display-title {
+    font-size: 150px;
+    font-weight: 500;
+    font-family: 'Brush Script MT', cursive;
+    margin-bottom: 20px;
+    margin-top: 50px;
+    padding-top: 50px;
+}
+.subtitle {
+    font-size: 22px;
+    font-weight: 500;
+    font-family: 'Cambria', serif;
+    margin-bottom: 20px;
+}
+.description {
+    margin-top: 30px;
+    font-size: 18px;
+    line-height: 1.6;
+    background: rgba(0,0,0,0.5); 
+    padding: 25px;
+    border-radius: 8px;
+}
+.cta-button {
+    margin-top: 40px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary); 
+    background-color: var(--color-secondary); 
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed); 
+}
+.cta-button:hover {
+    background-color: #ffeb84;
+}
+
+/* --- General Section Styling --- */
+.section {
+    padding: 80px 40px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.page-hero {
+    min-height: 40vh;
+    padding-top: 150px;
+    background-color: var(--color-primary);
+    color: white;
+    margin-bottom: 20px;
+}
+.section h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: var(--color-primary); 
+    font-weight: 700;
+}
+.section-subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+/* --- Value Proposition (Card) Section --- */
+.value-proposition {
+    background: #fcfdfd; 
+}
+.card-container {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    text-align: center;
+    border-top: 5px solid var(--color-secondary); 
+}
+.card i {
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+.card h3 {
+    color: var(--color-primary);
+    margin: 10px 0;
+}
+
+/* --- Core Services Section --- */
+.service-container {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+.service-box {
+    flex: 1;
+    background: #f7f7f7;
+    padding: 40px 20px;
+    border-radius: 10px;
+    border-top: 5px solid var(--color-primary); 
+}
+.service-box i {
+    color: var(--color-secondary);
+    margin-bottom: 15px;
+}
+.service-box h3 {
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+.service-cta {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background var(--transition-speed); 
+}
+.service-cta:hover {
+    background: #ffeb84;
+}
+
+/* --- Trip Planner Section (AI) --- */
+.trip-planner {
+    background: var(--color-primary); 
+    color: white;
+    text-align: left;
+}
+.trip-planner h2 {
+    color: white;
+    text-align: center;
+}
+.planner-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-top: 40px;
+}
+.planner-text {
+    flex: 1;
+}
+.planner-text ul {
+    margin: 20px 0;
+    list-style-type: none;
+    padding-left: 0;
+}
+.planner-text ul li {
+    padding-left: 25px;
+    line-height: 2;
+    font-size: 1.1em;
+}
+.planner-text ul li i {
+    color: var(--color-secondary);
+    margin-right: 8px;
+}
+.planner-image {
+    flex: 1;
+    min-height: 300px;
+    background: #003040; 
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+}
+
+/* --- Footer --- */
+footer {
+    background: #222;
+    color: #ccc;
+    padding: 30px 40px;
+    text-align: center;
+    font-size: 14px;
+}
+.footer-content a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color var(--transition-speed);
+}
+.footer-content a:hover {
+    color: white;
+}
+
+/* ========================================================= */
+/* USER PROFILE ICON STYLES (Moved OUT of Media Query!)     */
+/* ========================================================= */
+.user-profile-container {
+    position: relative;
+    display: flex;       
+    align-items: center; 
+    cursor: pointer;
+    margin-left: 10px;   
+}
+
+.profile-icon {
+    width: 32px;  
+    height: 32px; 
+    border-radius: 50%;
+    border: 2px solid #ffd700; /* Gold Border */
+    object-fit: cover; 
+    transition: 0.3s;
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+/* THE DROPDOWN MENU */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 1200;
+    overflow: hidden;
+    text-align: left;
+}
+
+.profile-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s;
+}
+
+.profile-dropdown a {
+    color: #333 !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+    color: #00465a !important;
+    padding-left: 20px;
+}
+
+/* ==================================== */
+/* 4. RESPONSIVENESS (Mobile First) */
+/* ==================================== */
+
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@media (max-width: 500px) {
+    .display-title { font-size: 48px; }
+    .cta-button { padding: 10px 20px; font-size: 16px; }
+    .section h2 { font-size: 28px; }
+    .description { font-size: 16px; }
+}
+@media (min-width: 993px) {
+    .nav-links {
+        display: flex !important;
+    }
+}
+/* --- LOGIN SECTION STYLES --- */
+
+/* 1. Page Context: Center the login section vertically and horizontally */
+/* --- LOGIN SECTION STYLES --- */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    padding: 80px 20px;
+    
+    /* MODIFIED: Add your background image here */
+   background-image: 
+        linear-gradient(to bottom, 
+            var(--color-primary) 0%, /* Starts with your header color */
+            rgba(255, 255, 255, 0.13) 20%,  /* A slightly transparent version of primary, adjust % for fade speed */
+            rgba(255, 252, 252, 0.381) 100%,  /* More transparent as it goes down */
+            transparent 10%           /* Fully transparent at the bottom */
+        ),
+        
+        /* 2. LAYER 2: Your Background Photo */
+        url('/images/Image 3.png');
+    
+    /* Ensure the image covers the entire area */
+    background-size:cover; 
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+    /* Optional: Add a subtle overlay to soften the image contrast */
+    background-color: rgba(0, 0, 0, 0); 
+    background-blend-mode: overlay; 
+}
+
+/* 2. Login Card Styling: The main form box */
+.login-card {
+    background:rgba(255, 255, 255, 0.467);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgb(0, 0, 0);
+    width: 100%;
+    max-width: 400px; /* Standard width for login forms */
+    text-align: center;
+    transition: transform 0.3s ease;
+    
+}
+
+.login-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+}
+
+/* 3. Header and Title */
+.login-card h2 {
+    font-size: 30px;
+    color: var(--color-primary);
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+/* 4. Form Group and Inputs */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #000000;
+    font-size: 14px;}
+
+    .login-card input[type="text"],
+.login-card input[type="password"],
+.login-card input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    font-weight: 100;
+}
+
+.login-card input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 70, 90, 0.1);
+}
+
+/* 5. Submit Button (Using your existing CTA button style) */
+.login-submit-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.login-submit-btn:hover {
+    background-color: #ffeb84; /* Lighter shade of secondary color */
+}
+
+/* 6. Links and Helpers */
+.help-links {
+   
+    margin-top: 25px;
+    font-size: 14px;
+
+}
+
+.help-links a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.help-links a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 500px) {
+    .login-card {
+        padding: 30px 20px;
+        box-shadow: none; /* Remove shadow on very small screens for better edge-to-edge feel */
+    }
+    .login-card h2 {
+        font-size: 24px;
+    }
+    .login-submit-btn {
+        font-size: 16px;
+    }
+}
+/* =========================================
+   GALLERY PAGE STYLES
+   (Add to the bottom of style1.css)
+   ========================================= */
+
+/* 1. Gallery Hero Section 
+   Note: Added padding-top to account for your fixed .main-header in style1 */
+.gallery-hero {
+    text-align: center;
+    padding: 160px 20px 100px 20px; /* Top padding clears the fixed header */
+    background-color: #f9f9f9; /* Light contrast against the white cards */
+    background-image: url(/images/BeachSide1.jpg);
+    background-size: cover;
+    background-position:initial;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+}
+
+.gallery-hero h1 {
+    font-family: 'Brush Script MT', cursive; /* Matches your Logo font */
+    font-size: 4rem;
+    color:#ffffff; /* Uses your #00465a */
+    margin-bottom: 15px;
+    font-weight: lighter;
+}
+
+.gallery-hero p {
+    font-size: 1.2rem;
+    color: #ffffff;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* 2. Filter Menu (The buttons) */
+.filter-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.filter-btn {
+    padding: 10px 25px;
+    border: 2px solid var(--color-primary); /* Integrated your primary color */
+    background: transparent;
+    color: var(--color-primary);
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all var(--transition-speed); /* Uses your 0.3s variable */
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background-color: var(--color-primary);
+    color: var(--color-secondary); /* Uses your Gold #ffd700 */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 70, 90, 0.3);
+}
+
+/* 3. Gallery Grid System */
+.gallery-container {
+    max-width:100%;
+    margin: 0 auto;
+    padding-bottom: 60px;
+    
+}
+
+.gallery-grid {
+    display: grid;
+    /* Responsive Magic: Automatically fits columns based on screen size */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* 4. Individual Image Cards */
+.gallery-item {
+    position: relative;
+    height: 300px; /* Fixed height for uniform look */
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Zoom effect on hover */
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+/* 5. Hover Overlay (Dark Gradient) */
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient matches your specific dark teal color for consistency */
+    background: linear-gradient(to top, rgba(0, 70, 90, 0.9), transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.gallery-item:hover .overlay {
+    opacity: 1;
+}
+
+.overlay .text {
+    color: white;
+    font-size: 1.8rem;
+    font-family: 'Brush Script MT', cursive; /* Matches Title */
+    padding-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 6. Filter JavaScript Animations */
+/* These classes are toggled by the JS script */
+.gallery-item.hide {
+    display: none;
+}
+
+.gallery-item.show {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+/* 7. Responsive Adjustments */
+@media (max-width: 768px) {
+    .gallery-hero {
+        padding-top: 140px; /* Adjust for mobile header height */
+    }
+    
+    .gallery-hero h1 {
+        font-size: 3rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Smaller cards on mobile */
+    }
+}
+/* style4.css - Hotels, Guides, and Vehicle Partners */
+
+:root {
+    --primary-teal: #00465a;
+    --primary-dark: #003342;
+    --accent-gold: #ffd700;
+    --text-light: #f8f9fa;
+    --text-dark: #333;
+    --bg-light: #f4f7f6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-light);
+    overflow-x: hidden;
+    color: var(--text-dark);
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    position: relative;
+    height: 70vh;
+    background: linear-gradient(135deg, rgba(0, 51, 66, 0.95) 0%, rgba(0, 70, 90, 0.85) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    opacity: 0.99;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('/images/BeachSide1.jpg') center/cover;
+    opacity: 1;
+    z-index: -1;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    z-index: 2;
+    padding: 20px;
+    animation: fadeInUp 1.2s ease;
+}
+
+.hero-logo {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 5em; 
+    margin-bottom: 10px;
+    color: var(--accent-gold);
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.5em;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+
+/* --- SECTIONS --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 3.5em;
+    color: var(--primary-teal);
+    font-weight: normal;
+}
+
+/* --- HOTELS GRID --- */
+.hotels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.hotel-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.hotel-card:hover { transform: translateY(-10px); }
+
+.hotel-image { width: 100%; height: 250px; object-fit: cover; }
+.hotel-info { padding: 25px; }
+.hotel-name { font-size: 1.4em; color: var(--primary-teal); margin-bottom: 8px; font-weight: 600; }
+.hotel-price { font-size: 1.6em; font-weight: 600; color: var(--primary-teal); display: flex; justify-content: space-between; align-items: center; }
+
+/* --- GUIDES SECTION (UPDATED: BIGGER PROFILES) --- */
+.guides-grid {
+    display: grid;
+    /* Larger cards: min 400px wide */
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); 
+    gap: 30px;
+}
+
+.guide-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    display: flex; /* Side-by-side layout */
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-top: 5px solid var(--accent-gold);
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.guide-card:hover { transform: scale(1.02); }
+
+.guide-photo {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-teal);
+    margin-bottom: 20px;
+}
+
+.guide-details h3 { color: var(--primary-teal); font-size: 1.5em; margin-bottom: 5px; }
+.guide-role { color: #666; font-weight: 600; margin-bottom: 10px; }
+.guide-meta { font-size: 0.9em; color: #555; line-height: 1.6; margin-bottom: 15px; }
+.guide-rating { color: #f59e0b; font-size: 1.2em; font-weight: bold; margin-bottom: 15px; }
+
+/* --- TRANSPORT PARTNERS (NEW) --- */
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.partner-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: 0.3s;
+}
+
+.partner-card:hover {
+    border-color: var(--primary-teal);
+    box-shadow: 0 8px 25px rgba(0, 70, 90, 0.15);
+}
+
+.partner-logo { 
+    height: 80px; 
+    object-fit: contain; 
+    margin-bottom: 15px; 
+    filter: grayscale(100%);
+    transition: 0.3s;
+}
+.partner-card:hover .partner-logo { filter: grayscale(0%); }
+
+/* --- FLEET / VEHICLE LIST (INSIDE MODAL) --- */
+.fleet-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+.vehicle-item {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    align-items: center;
+}
+.vehicle-img { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; }
+.vehicle-info h4 { color: var(--primary-teal); margin-bottom: 5px; }
+.vehicle-price { color: #d32f2f; font-weight: bold; }
+.vehicle-conditions { font-size: 0.85em; color: #666; margin-top: 5px; }
+
+/* --- BUTTONS --- */
+.view-btn {
+    padding: 10px 25px;
+    background: var(--primary-teal); color: white;
+    border: none; border-radius: 50px; cursor: pointer;
+    font-weight: 600; transition: 0.3s;
+}
+.view-btn:hover { background: var(--accent-gold); color: var(--primary-teal); }
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(0, 50, 70, 0.8);
+    opacity: 0; visibility: hidden; transition: all 0.4s; z-index: 998;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+
+.hotel-modal {
+    position: fixed; top: 0; right: -100%;
+    width: 100%; max-width: 650px; height: 100vh;
+    background: white; transition: right 0.4s ease; z-index: 999; overflow-y: auto;
+}
+.hotel-modal.active { right: 0; }
+
+.close-modal {
+    position: absolute; top: 20px; right: 20px;
+    width: 40px; height: 40px; background: white;
+    border-radius: 50%; border: none; font-size: 24px; cursor: pointer; z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.modal-header { height: 300px; overflow: hidden; position: relative; }
+.modal-gallery img { width: 100%; height: 100%; object-fit: cover; }
+.modal-content { padding: 35px; }
+
+.modal-title {
+    margin-bottom: 15px;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.modal-section {
+    margin-bottom: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.modal-section h4 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1em;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.details-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+/* ===== AI OPTIONS GRID ===== */
+.ai-options-grid .card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+.ai-options-grid .card p {
+    margin: 5px 0;
+}

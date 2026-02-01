@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Connect Lanka</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+    <section class="login-container">
+        <a href="index.html" class="display-title" style="color: black; position:absolute; top: -80px; text-decoration: none; "> Connect Lanka</a>
+        <br>
+        <div class="login-card">
+            <h2>Log In</h2>
+            <form id="loginForm">
+                
+                <div class="form-group">
+                    <label for="loginInput"><b>Email or Username</b></label>
+                    <input type="text" id="loginInput" required placeholder="Enter email or username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" class="login-submit-btn">Log In</button>
+            </form>
+
+            <div class="help-links">
+                <a href="#">Forgot Password?</a>
+                <span>|</span>
+                <a href="Signup.html">Create Account</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const input = document.getElementById('loginInput').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Talk to the Server
+                const response = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: input, password: password }) 
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("✅ Welcome back, " + result.username + "!");
+                    
+                    // Save login info
+                    localStorage.setItem('currentUser', result.username);
+                    localStorage.setItem('userRole', result.role); // Save role (Traveler vs Partner)
+
+                    // Redirect based on who they are
+                    if(result.role === 'traveler') {
+                        window.location.href = 'Home.html';
+                    } else {
+                        // Partners might go to a different page, or just Home for now
+                        window.location.href = 'Home.html'; 
+                    }
+                } else {
+                    alert("❌ Login Failed: " + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server connection failed! Is 'node server.js' running?");
+            }
+        });
+    </script>
+    
+
+</body>
+</html>

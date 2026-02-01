@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Connect Lanka</title>
+   <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="login-container">
+        <a href="index.html" class="display-title" style="color: black; position:absolute; top: -80px; text-decoration: none; "> Connect Lanka</a>
+        <br>
+
+        <div class="login-card" style="margin-top: 100px;">
+            <h2>Create Traveler Account</h2>
+            <form id="signupForm">
+                
+                <div class="form-group">
+                    <label><b>Full Name</b></label>
+                    <input type="text" id="fullname" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label><b>Username</b></label>
+                    <input type="text" id="username" required placeholder="Choose a unique username">
+                </div>
+
+                <div class="form-group">
+                    <label><b>Email Address</b></label>
+                    <input type="email" id="email" required placeholder="name@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label><b>Nationality</b></label>
+                    <select id="nationality" required>
+                        <option value="" disabled selected>Select your nationality</option>
+                        <option value="Sri Lankan">Sri Lankan</option>
+                        <option value="India">India</option>
+                        <option value="China">China</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Russia">Russia</option>
+                        <option value="USA">USA</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label><b>Password</b></label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label><b>Confirm Password</b></label>
+                    <input type="password" id="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="login-submit-btn">Sign Up</button>
+            </form>
+
+            <div class="help-links">
+                <span style="color: aliceblue;">Already have an account?</span>
+                <a href="Login.html">Log In here</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 1. Gather ALL fields
+            const fullname = document.getElementById('fullname').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const nationality = document.getElementById('nationality').value;
+            const password = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirm_password').value;
+
+            // 2. Check Password Match
+            if(password !== confirmPass) {
+                alert("❌ Passwords do not match!");
+                return;
+            }
+
+            try {
+                // 3. Send to Server
+                const response = await fetch('http://localhost:5000/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        fullname: fullname,
+                        username: username, 
+                        email: email, 
+                        nationality: nationality, // Sending Nationality
+                        password: password,
+                        role: 'traveler'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("✅ Account Created! Please Log In.");
+                    window.location.href = 'Login.html';
+                } else {
+                    alert("❌ Error: " + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server connection failed!");
+            }
+        });
+    </script>
+</body>
+</html>

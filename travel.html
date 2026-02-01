@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel | Connect Lanka</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+
+<style>
+/* ===== HERO SECTION ===== */
+.hero {
+    width: 100%;
+    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    background:linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
+               url("https://placehold.co/1600x500") center/cover no-repeat;
+}
+
+/* ===== GRID ===== */
+.container { padding: 60px 40px; }
+.section-title { text-align:center; margin-bottom:30px; color:var(--color-primary); }
+
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card {
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,.1);
+}
+.card img { width:100%; height:180px; object-fit:cover; }
+.card .content { padding:15px; }
+
+/* ===== BUTTON ===== */
+.details-btn {
+    margin-top:10px;
+    padding:8px 16px;
+    background:var(--color-primary);
+    color:white;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* ===== MODAL ===== */
+.modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:2000;
+}
+.modal-content {
+    background:white;
+    max-width:420px;
+    margin:8% auto;
+    padding:25px;
+    border-radius:12px;
+}
+.close {
+    float:right;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* ===== MOBILE NAV ===== */
+.menu-toggle { display:none; color:white; }
+
+@media (max-width: 992px) {
+    .menu-toggle { display:block; }
+    .nav-links {
+        display:none;
+        position:absolute;
+        top:70px;
+        left:0;
+        width:100%;
+        background:rgba(0,0,0,0.95);
+        flex-direction:column;
+    }
+    .nav-links.active { display:flex; }
+}
+/* ===== AI SECTION ===== */
+.ai-box {
+    max-width:600px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.ai-box label {
+    display:block;
+    margin-top:12px;
+    font-weight:500;
+}
+
+.ai-box input,
+.ai-box select {
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.ai-result {
+    margin-top:20px;
+    padding:15px;
+    background:#f4fdf8;
+    border-left:5px solid var(--color-primary);
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="main-header">
+<nav class="navbar">
+<div class="site-logo"><a href="index.html">Connect Lanka</a></div>
+
+<div class="menu-toggle" id="menu-toggle">
+<i class="fas fa-bars"></i>
+</div>
+
+<ul class="nav-links" id="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="map.html">Map</a></li>
+<li><a href="gallery.html">Gallery</a></li>
+<li><a href="travel.html" class="active">Travel</a></li>
+<li id="loginItem"><a href="signup-option.html">Login</a></li>
+</ul>
+</nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+<div>
+<h1 style="font-size: 50px;">Connect Lanka Travel</h1>
+<p>Hotels • Transport • Guides</p>
+</div>
+</div>
+
+<!-- ===== AI RECOMMENDATION ===== -->
+<section class="container" id="AI_Recommend">
+<h2 class="section-title">🤖 AI Travel Planner</h2>
+
+<div class="ai-box">
+    <label>Budget (LKR)</label>
+    <input type="number" id="aiBudget" placeholder="Example: 50000">
+
+    <label>Number of Days</label>
+    <input type="number" id="aiDays" placeholder="Example: 3">
+
+    <label>Travel Interest</label>
+    <select id="aiInterest">
+        <option value="">Select Interest</option>
+        <option value="beach">Beach</option>
+        <option value="nature">Nature</option>
+        <option value="culture">Culture</option>
+        <option value="adventure">Adventure</option>
+        <option value="wildlife">Wildlife</option>
+    </select>
+
+    <button class="details-btn" onclick="runAIPlanner()">Generate Travel Plan</button>
+
+    <div id="aiResult" class="ai-result" style="display:none;"></div>
+</div>
+
+<script src="js/ai.js"></script>
+</section>
+
+<!-- ===== HOTELS ===== -->
+<section class="container" id="hotels">
+<h2 class="section-title">Hotels</h2>
+<div id="hotelsGrid" class="grid"></div>
+</section>
+
+<!-- ===== PARTNERS ===== -->
+<section class="container" id="partner">
+<h2 class="section-title">Transport Partners</h2>
+<div id="partnersGrid" class="grid"></div>
+</section>
+
+<!-- ===== GUIDES ===== -->
+<section class="container" id="guides">
+<h2 class="section-title">Tour Guides</h2>
+<div id="guidesGrid" class="grid"></div>
+</section>
+
+<!-- ===== DETAILS MODAL ===== -->
+<div id="detailsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+
+    <!-- Modal Title -->
+    <h2 id="modalTitle" class="modal-title"></h2>
+
+    <!-- Details Section -->
+    <div class="modal-section">
+      <h4>Details</h4>
+      <p id="modalDescription"></p>
+    </div>
+
+    <!-- Booking Section -->
+    <div class="modal-section">
+      <h4>Booking Information</h4>
+
+      <div class="form-group">
+        <label for="bookingDate">Start Date</label>
+        <input type="date" id="bookingDate">
+      </div>
+
+      <div class="form-group">
+        <label for="bookingDays">Number of Days</label>
+        <input type="number" id="bookingDays" min="1">
+      </div>
+
+      <button class="details-btn" onclick="confirmBooking()">Book Now</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2026 Connect Lanka. All Rights Reserved. | Tourism Hotline: 1912</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Use</a> |
+            <a href="mailto:info@connectlanka.com">Contact Us</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ==================== LOGIN GUARD ==================== */
+function isUserLoggedIn() {
+    return localStorage.getItem("currentUser") !== null;
+}
+
+function requireLogin() {
+    if (!isUserLoggedIn()) {
+        alert("⚠️ Please log in to continue.");
+        window.location.href = "signup-option.html";
+        return false;
+    }
+    return true;
+}
+
+/* ==================== MOBILE MENU ==================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+    });
+});
+
+/* ==================== FETCH DATA ==================== */
+let hotels = [], partners = [], guides = [];
+
+async function loadData() {
+    try {
+        hotels = await fetch("http://localhost:5000/api/hotels").then(r => r.json());
+        partners = await fetch("http://localhost:5000/api/partners").then(r => r.json());
+        guides = await fetch("http://localhost:5000/api/guides").then(r => r.json());
+
+        renderHotels();
+        renderPartners();
+        renderGuides();
+    } catch (err) {
+        console.error("Error fetching data:", err);
+    }
+}
+document.addEventListener("DOMContentLoaded", loadData);
+
+/* ==================== RENDER FUNCTIONS ==================== */
+function renderHotels() {
+    const hotelsGrid = document.getElementById("hotelsGrid");
+    hotelsGrid.innerHTML = hotels.map(h => `
+        <div class="card">
+            <img src="${h.image}" alt="${h.name}">
+            <div class="content">
+                <h3>${h.name}</h3>
+                <p>${h.location}</p>
+                <p>LKR ${h.price}</p>
+                <button class="details-btn" onclick='openDetails("hotel", ${JSON.stringify(h)})'>
+                    View Details
+                </button>
+            </div>
+        </div>
+    `).join("");
+}
+
+function renderPartners() {
+    const partnersGrid = document.getElementById("partnersGrid");
+    partnersGrid.innerHTML = partners.map(p => `
+        <div class="card">
+            <img src="${p.logo}" alt="${p.name}">
+            <div class="content">
+                <h3>${p.name}</h3>
+                <p>${p.desc}</p>
+                <button class="details-btn" onclick='openDetails("partner", ${JSON.stringify(p)})'>
+                    View Details
+                </button>
+            </div>
+        </div>
+    `).join("");
+}
+
+function renderGuides() {
+    const guidesGrid = document.getElementById("guidesGrid");
+    guidesGrid.innerHTML = guides.map(g => `
+        <div class="card">
+            <img src="${g.image}" alt="${g.name}">
+            <div class="content">
+                <h3>${g.name}</h3>
+                <p>${g.role}</p>
+                <p>⭐ ${g.rating || "N/A"}</p>
+                <button class="details-btn" onclick='openDetails("guide", ${JSON.stringify(g)})'>
+                    View Details
+                </button>
+            </div>
+        </div>
+    `).join("");
+}
+
+/* ==================== MODAL & BOOKING ==================== */
+let selectedItem = null;
+
+function openDetails(type, item) {
+    if (!requireLogin()) return;
+
+    selectedItem = { type, item };
+    document.getElementById("modalTitle").innerText = item.name;
+    document.getElementById("modalDescription").innerText =
+        type === "hotel" ? `Location: ${item.location}, Price: LKR ${item.price}` : item.desc || item.role;
+    
+    document.getElementById("detailsModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("detailsModal").style.display = "none";
+}
+
+function confirmBooking() {
+    const date = document.getElementById("bookingDate").value;
+    const days = document.getElementById("bookingDays").value;
+
+    if (!date || !days) {
+        alert("Please select date and days");
+        return;
+    }
+
+    alert(`Booking confirmed!
+${selectedItem.item.name}
+From: ${date}
+Days: ${days}`);
+
+    closeModal();
+}
+
+/* ==================== PROFILE ICON (HEADER) ==================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const username = localStorage.getItem("currentUser");
+    const loginItem = document.getElementById("loginItem");
+
+    if (username && loginItem) {
+        const avatarUrl = `https://ui-avatars.com/api/?name=${username}&background=00465a&color=fff&rounded=true&bold=true`;
+
+        loginItem.innerHTML = `
+            <div class="user-profile-container" onclick="toggleProfileMenu()">
+                <img src="${avatarUrl}" class="profile-icon" alt="${username}">
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div style="padding:10px; border-bottom:1px solid #eee; color:#666; font-size:0.8em;">
+                        Signed in as <strong>${username}</strong>
+                    </div>
+                    <a href="#" onclick="logoutUser()">Log Out</a>
+                </div>
+            </div>
+        `;
+    }
+});
+
+function toggleProfileMenu() {
+    const dropdown = document.getElementById("profileDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    window.location.reload();
+}
+</script>
+ <script src="js/ai.js"></script>
+ <script src="js/common.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Partner | Connect Lanka</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    
+    <style>
+        .dynamic-field { display: none; }
+        .dynamic-field.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        select, textarea {
+            width: 100%; padding: 10px; margin-top: 5px;
+            border: 1px solid #ccc; border-radius: 4px;
+        }
+        .login-card { max-width: 500px; margin-top: 50px; padding-bottom: 30px; }
+        
+        /* Highlight the login section */
+        .auth-section {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #bde0fe;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <section class="login-container">
+        <a href="index.html" class="display-title" style="color: black; position:absolute; top: -80px; text-decoration: none; "> Connect Lanka</a>
+        
+        <div class="login-card">
+            <h2>Partner Registration</h2>
+            <p style="text-align: center; color: #666; font-size: 0.9em; margin-bottom: 20px;">
+                Create your business profile & login account
+            </p>
+
+            <form id="registerForm">
+                
+                <div class="auth-section">
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px; color: #00465a;">1. Create Login Details</h3>
+                    <div class="form-group">
+                        <label><b>Username</b></label>
+                        <input type="text" id="username" required placeholder="For logging in later">
+                    </div>
+                    <div class="form-group">
+                        <label><b>Password</b></label>
+                        <input type="password" id="password" required placeholder="Choose a secure password">
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.1em; margin-bottom: 10px; color: #00465a;">2. Business Details</h3>
+                
+                <div class="form-group">
+                    <label for="roleSelector"><b>I am registering as:</b></label>
+                    <select id="roleSelector" onchange="updateForm()" required>
+                        <option value="hotel">Hotel / Accommodation</option>
+                        <option value="guide">Tour Guide</option>
+                        <option value="partner">Transport Partner</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><b>Business / Name</b></label>
+                    <input type="text" id="name" required placeholder="e.g. Cinnamon Grand">
+                </div>
+
+                <div class="form-group">
+                    <label><b>Description</b></label>
+                    <textarea id="desc" rows="2" required placeholder="Short description..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><b>Image URL</b></label>
+                    <input type="text" id="image" required placeholder="https://...">
+                </div>
+
+                <div id="hotelFields" class="dynamic-field active">
+                    <div class="form-group">
+                        <label><b>Location</b></label>
+                        <input type="text" id="location" placeholder="City Name">
+                    </div>
+                    <div class="form-group">
+                        <label><b>Price ($)</b></label>
+                        <input type="number" id="price" placeholder="Per Night">
+                    </div>
+                </div>
+
+                <div id="guideFields" class="dynamic-field">
+                    <div class="form-group">
+                        <label><b>Role Title</b></label>
+                        <input type="text" id="role" placeholder="e.g. Wildlife Expert">
+                    </div>
+                    <div class="form-group">
+                        <label><b>Languages</b></label>
+                        <input type="text" id="languages" placeholder="English, German...">
+                    </div>
+                    <div class="form-group">
+                        <label><b>License No.</b></label>
+                        <input type="text" id="qualifications" placeholder="SLTDA Number">
+                    </div>
+                </div>
+
+                <div id="partnerFields" class="dynamic-field">
+                    <p style="font-size: 0.8em; color: orange; text-align: center;">* Fleet details can be added later.</p>
+                </div>
+
+                <br>
+                <button type="submit" class="login-submit-btn">Register & Create Account</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function updateForm() {
+            const role = document.getElementById('roleSelector').value;
+            document.getElementById('hotelFields').classList.remove('active');
+            document.getElementById('guideFields').classList.remove('active');
+            document.getElementById('partnerFields').classList.remove('active');
+
+            if(role === 'hotel') document.getElementById('hotelFields').classList.add('active');
+            if(role === 'guide') document.getElementById('guideFields').classList.add('active');
+            if(role === 'partner') document.getElementById('partnerFields').classList.add('active');
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const role = document.getElementById('roleSelector').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Base Data Package
+            let data = {
+                username: username,
+                password: password,
+                role: role, // 'hotel', 'guide', or 'partner'
+                
+                // Listing Details
+                name: document.getElementById('name').value,
+                desc: document.getElementById('desc').value,
+                image: document.getElementById('image').value
+            };
+
+            // Add Specifics
+            if(role === 'hotel') {
+                data.location = document.getElementById('location').value;
+                data.price = Number(document.getElementById('price').value);
+            } else if(role === 'guide') {
+                data.roleTitle = document.getElementById('role').value;
+                data.languages = document.getElementById('languages').value;
+                data.qualifications = document.getElementById('qualifications').value;
+            } 
+            // Partners use 'logo' instead of 'image' in Schema, let's map it
+            else if(role === 'partner') {
+                data.logo = data.image; 
+            }
+
+            try {
+                // Send EVERYTHING to a new special Server Route
+                const response = await fetch('http://localhost:5000/api/register-partner', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("✅ Account & Listing Created! Please Log In.");
+                    window.location.href = 'Login.html';
+                } else {
+                    alert("❌ Error: " + result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server not running!");
+            }
+        });
+    </script>
+</body>
+</html>
